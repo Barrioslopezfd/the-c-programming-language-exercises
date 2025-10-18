@@ -4,19 +4,19 @@
 #define NONBLANK 'a'
 
 void main() {
-    int c, last_char;
+    int cur_char, last_char;
     last_char = NONBLANK;
 
-    while ((c = getchar()) != EOF) {
-        if (last_char == BLANK && c == last_char) {
+    while ((cur_char = getchar()) != EOF) {
+        if (last_char == BLANK && cur_char == last_char) {
             continue;
         }
-        last_char = c;
-        if (c == BLANK) {
+        last_char = cur_char;
+        if (cur_char == BLANK) {
             printf("\n");
             continue;
         }
-        putchar(c);
+        putchar(cur_char);
 
     }
 }
