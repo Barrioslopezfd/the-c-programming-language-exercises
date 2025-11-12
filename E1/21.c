@@ -4,80 +4,89 @@
 #define MAX_SIZE 1000
 #define TABSTOP 8
 #define BLANK ' '
+#define TAB '\t'
 
 int getln(char line[]);
-void clear(char to[], char from[], int size_t);
-
-int debug_counter = 0;
 
 int main()
 {
 	int len;
 	char line[MAX_SIZE];
-	char clean[MAX_SIZE];
 	while ((len = getln(line)) > 0)
 	{
-		printf(" < that should be printed: %d\n", debug_counter);
-		printf("\"%s\"\n", line);
-		// printf("\"");
-		// for (int i = 0; i < (sizeof(line) - sizeof(char)); i++)
-		// {
-		// 	if (line[i] == '\0') { printf("\\0"); }
-		// 	else { putchar(line[i]); }
-		// 	if ((i % 8) == 7) { printf(" | "); }
-		// }
-		// printf("\n");
-		// for (int i = 0; i < (sizeof(clean) - sizeof(char)); i++)
-		// {
-		// 	if (clean[i] == '\0') { printf("\\0"); }
-		// 	else { putchar(clean[i]); }
-		// 	if ((i % 8) == 7) { printf(" | "); }
-		// }
-		// printf("\"");
-		// printf("\n");
+		printf("%s\n", line);
 	}
 }
 
 int getln(char line[])
 {
 	memset(line, 0, MAX_SIZE);
-	debug_counter = 0;
 
-	int c;
+	int resto, c;
 	int i = 0;
 	int z = 0;
-	int blanks=0;
-	int last = -1;
-
+	int aux = 0;
+	int blanks = 0;
+	int tabs = 0;
+	int col = 0;
 	while (i < MAX_SIZE - 1 && (c = getchar()) != EOF && c != '\n')
 	{
 		if (c == BLANK)
 		{
 			blanks++;
-			if ( (i % TABSTOP) == 7 )
+			i++;
+			continue;
+		}
+
+		while (blanks > 1)
+		{
+			aux = TABSTOP - (col % TABSTOP);
+			if (aux > 0)
 			{
-				if (last == -1) 
+				line[z] = TAB;
+				col = col + 8;
+				z++;
+				blanks = blanks - aux;
+			}
+
+			if ((blanks / TABSTOP) > 0)
+			{
+				for (int j = 0; j < blanks / TABSTOP; j++)
 				{
-					last = z - blanks;
-					line[last] = '>';
+					line[z] = TAB;
+					col++;
+					z++;
 				}
-				else
+				blanks = blanks - ((blanks / TABSTOP) * TABSTOP);
+				if (blanks > 0)
 				{
-					line[last + 1]='>';
-					last++;
-					debug_counter++;
+					for (int j = 0; j < blanks; j++)
+					{
+						line[z] = BLANK;
+						col++;
+						z++;
+					}
 					blanks = 0;
 				}
 			}
 		}
-		else
+		if (blanks == 1) 
 		{
-			line[z]=c;
-			last = z;
-			blanks = 0;
+			line[z] = BLANK;
+			z++;
+			col++;
+			i++;
 		}
-		i++;
+	
+		line[z] = c;
+		if (c == TAB)
+			col = col + 8;
+		else
+			col++;
 		z++;
+		blanks = 0;
+
+		i++;
 	}
 	return z;
 }

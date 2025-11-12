@@ -12,7 +12,7 @@ int main()
 	char line[MAX_SIZE];
 	while ((len = getln(line)) > 0)
 	{
-		printf("\"%s\"\n", line);
+		printf("%s\n", line);
 	}
 }
 

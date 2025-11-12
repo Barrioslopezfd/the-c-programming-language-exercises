@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main() 
+{
+	// comentario
+	// mas comentario
+	//
+
+	/* comentario
+	 * multi
+	 * linea */
+
+	Esto no es un comentario
+} 

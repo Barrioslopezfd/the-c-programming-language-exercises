@@ -1,0 +1,97 @@
+#include <stdio.h>
+
+#define MAX_SIZE 1000
+#define SLASH '/'
+#define ASSTERSIK '*'
+#define NL '\n'
+#define DQUOTE '\"'
+
+int getln(char line[]);
+void clean(char line[]);
+void incomment(int *inside, char lastchar, char curchar, char *com);
+void instring(int *instr, char curchar);
+
+int main()
+{
+	int len;
+	char line[MAX_SIZE];
+	while ((len = getln(line)) > 0)
+	{
+		printf("%s\n", line);
+	}
+}
+
+int getln(char line[])
+{
+	clean(line);
+
+	char opens[MAX_SIZE];
+	
+	char lastchar, curchar, nextchar, com;
+	int inside = 0;
+	int instr = 0;
+	int ln = 0;
+	int ch = 0;
+	int i = 0;
+
+	while (i < MAX_SIZE - 1 && nextchar != EOF)
+	{
+		if (curchar == NL)
+			ln++;
+		ch++;
+		nextchar = getchar();
+
+		incomment(
+				&inside, 
+				lastchar, 
+				curchar,
+				&com);
+
+		if (inside == 0)
+			printf("INSIDE");
+	
+		lastchar = curchar;
+		curchar = nextchar;
+		i++;
+	}
+	return i;
+}
+
+void clean(char line[])
+{
+	for (int i = 0; i < MAX_SIZE; i++)
+	{
+		line[i] = '\0';
+	}
+}
+
+void incomment(int *inside, char lastchar, char curchar, char *com)
+{
+		if (lastchar == SLASH && (curchar == SLASH || curchar == ASSTERSIK))
+		{
+			*com = curchar;
+			*inside = 1;
+		}
+		if ( *inside == 1 )
+		{
+			if ( *com == SLASH && curchar == NL )
+				*inside = 0;
+			if ( *com == ASSTERSIK && lastchar == ASSTERSIK && curchar == SLASH )
+				*inside = 0;
+		}
+}
+
+void instring(int *instr, char curchar)
+{
+		if ( curchar == DQUOTE )
+		{
+			*instr = !*instr;
+		}
+}
+void inchar(int *inch, char curchar)
+{
+	if ( curchar == SQUOTE )
+	{
+		*inch = !*inch;
+	}
+}
